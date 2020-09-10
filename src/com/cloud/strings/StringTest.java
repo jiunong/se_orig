@@ -17,6 +17,7 @@ public class StringTest {
 
     /**
     * TODO 测试replace
+    *<p>replaceAll 可以采用正则<p/>
     * @author xuhong.ding
     * @since 2020/9/10 10:48
     */

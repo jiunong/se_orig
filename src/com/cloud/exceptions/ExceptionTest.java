@@ -10,12 +10,14 @@ public class ExceptionTest {
 
 
     public static void main(String[] args){
-
+            testException1();
     }
 
 
     /**
-    * TODO 捕获异常后继续执行
+    * TODO
+    * <p>try-catch写在循环内部 可以捕获异常后继续执行</p>
+    * <p>try-catch写在循环外部 捕获异常后不继续执行</p>
     * @return void
     * @author xuhong.ding
     * @since 2020/9/10 10:54
