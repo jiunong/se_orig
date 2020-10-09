@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class XmlTest {
 
-    private static String filePath = "D:\\demotest\\test.sln.xml";
+    private static String filePath = "D:\\d.sln.xml";
 
     //private static Logger logger = Logger.getLogger(XmlTest.class);
 
@@ -91,7 +91,7 @@ public class XmlTest {
         for (Object o : element.attributes()) {
             Attribute attr = (Attribute) o;
             if (!isEmpty(attr.getValue())) {
-                json.put("@" + attr.getName(), attr.getValue());
+                json.put(attr.getName(), attr.getValue());
             }
         }
         List<Element> chdEl = element.elements();
@@ -128,7 +128,7 @@ public class XmlTest {
                 for (Object o : element.attributes()) {
                     Attribute attr = (Attribute) o;
                     if (!isEmpty(attr.getValue())) {
-                        json.put("@" + attr.getName(), attr.getValue());
+                        json.put(attr.getName(), attr.getValue());
                     }
                 }
                 if (!e.getText().isEmpty()) {
