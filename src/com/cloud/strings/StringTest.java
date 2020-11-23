@@ -1,5 +1,6 @@
 package com.cloud.strings;
 
+import java.io.*;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -17,7 +18,9 @@ public class StringTest {
         //testReplace();
         //testSpilt();
         //testMatch();
-        testEndsWith();
+        /*testEndsWith();*/
+        //testsp();
+       readToString("F:\\python\\dms_yx_nx.E");
     }
 
 
@@ -28,11 +31,36 @@ public class StringTest {
     * @author xuhong.ding
     * @since 2020/9/10 10:48
     */
-    static void testReplace(){
+    static void testReplace() throws Exception{
+/*
         String str = "打开【主上符合】开关";
         System.out.println(str.replaceAll("[【】]",""));
         System.out.println(str.replace('【','1').replace("】","2"));
+*/
+    }
 
+    static String readToString(String fileName) {
+        String encoding = "GBK";
+        File file = new File(fileName);
+        Long filelength = file.length();
+        byte[] filecontent = new byte[filelength.intValue()];
+        try {
+            FileInputStream in = new FileInputStream(file);
+            in.read(filecontent);
+            in.close();
+        } catch (FileNotFoundException e) {
+
+        } catch (IOException e) {
+
+        }
+        try {
+            String s = new String(filecontent, encoding);
+            return s;
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("The OS does not support " + encoding);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -88,8 +116,16 @@ public class StringTest {
             System.out.println(s);
         }
 
+    }
 
+    static  void testsp(){
+        String var = "#\tNULL\t3800756610523992894\t四平 乙线37+1#-四平乙线38#\tPD_10100000_797628\t0\t-8991449\t-8991434\t\n" +
+                "112871465660973063\t0\t0.000000\t3799912185593856062";
 
+        String[] split = var.split("\\t+");
+        String[] splits = var.split("\\s");
+        Arrays.asList(split).stream().forEach(u ->{System.out.println(u);});
+        //Arrays.asList(splits).stream().forEach(u ->{System.out.println(u);});
     }
 
 }
