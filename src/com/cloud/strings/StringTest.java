@@ -1,7 +1,11 @@
 package com.cloud.strings;
 
+import com.sun.org.apache.xpath.internal.objects.XNull;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -10,17 +14,19 @@ import java.util.regex.Pattern;
  * @author xuhong.ding
  * @since 2020/9/10 10:47
  */
-public class StringTest {
+public class StringTest{
 
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws Exception {
 
         //testReplace();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
         //testsp();
-       readToString("F:\\python\\dms_yx_nx.E");
+       //readToStringFileInputStream("F:\\python\\dms_yx_nx.E");
+        readToStringBufferedReader();
     }
 
 
@@ -32,14 +38,13 @@ public class StringTest {
     * @since 2020/9/10 10:48
     */
     static void testReplace() throws Exception{
-/*
         String str = "打开【主上符合】开关";
+        //System.out.println(str.replaceAll("\\n[^#@]","").replaceAll(" ",""));
         System.out.println(str.replaceAll("[【】]",""));
         System.out.println(str.replace('【','1').replace("】","2"));
-*/
     }
 
-    static String readToString(String fileName) {
+    static String readToStringFileInputStream(String fileName) {
         String encoding = "GBK";
         File file = new File(fileName);
         Long filelength = file.length();
@@ -118,6 +123,13 @@ public class StringTest {
 
     }
 
+    /**
+    * TODO 测试tab和空格分隔
+    * @param
+    * @return void
+    * @author xuhong.ding
+    * @since 2020/11/24 8:26
+    */
     static  void testsp(){
         String var = "#\tNULL\t3800756610523992894\t四平 乙线37+1#-四平乙线38#\tPD_10100000_797628\t0\t-8991449\t-8991434\t\n" +
                 "112871465660973063\t0\t0.000000\t3799912185593856062";
@@ -126,6 +138,31 @@ public class StringTest {
         String[] splits = var.split("\\s");
         Arrays.asList(split).stream().forEach(u ->{System.out.println(u);});
         //Arrays.asList(splits).stream().forEach(u ->{System.out.println(u);});
+    }
+
+    static void readToStringBufferedReader() throws Exception{
+        int startIndex = 0;
+        int thisIndex = 0;
+        int endIndex = 0;
+        boolean flag = false;
+        //文件内容的字符集 UTF8 或 GBK
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("F:\\python\\dms_yx_nx.E"), "GBK"));
+        String line = null;
+        String lineNext;
+        List<String> list = new ArrayList<>();
+        while (reader.ready()) {
+            if (line == null) {
+                line = reader.readLine();
+            }
+            lineNext =reader.readLine();
+            while (lineNext!=null && !lineNext.startsWith("#")&& !lineNext.startsWith("<")&& !lineNext.startsWith("@")) {
+                line+=lineNext;
+                lineNext =reader.readLine();
+            }
+            list.add(line.replaceAll("\\n[^#@]","").replaceAll(" ",""));
+            line = lineNext;
+        }
+        reader.close();
     }
 
 }
