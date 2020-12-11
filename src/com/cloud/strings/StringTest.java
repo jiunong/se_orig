@@ -20,7 +20,7 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        testReplace();
+        testTF();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -88,16 +88,10 @@ public class StringTest {
     }
 
     static void testMatch() {
-        String str2 = "打开【主上符合】线路刀闸及123母线开关";
-        String pattern1_begin = "打开(.*)线路刀闸及(.*)母线开关";
-        String pattern2 = "合上(.*)(.*)母线刀闸及线路刀闸";
-        String replace1 = pattern2.replace("(.*)", "$1");
-        String replace2 = pattern2.replace("(.*)", "$1").replace("(.*)", "$2");
-        //String pattern1_end =  "线路刀闸(.*)母线开关";
-        //System.out.println(str2.matches(pattern1_begin));
-        //System.out.println(str2.matches(pattern1_end));
-        System.out.println(str2.replaceAll(pattern1_begin, pattern2.replace("(.*)", "$1").replace("(.*)", "$2")));
-
+        String str2 = "打开主上符合线路刀闸及123母线开关";
+        String pattern1 = "打开(.*)线路刀闸及(.*)母线开关";
+        String pattern2 = "合上$1$2母线刀闸及线路刀闸";
+        System.out.println(str2.replaceAll(pattern1, pattern2));
     }
 
     static void testEndsWith() {
@@ -184,5 +178,12 @@ public class StringTest {
         String s = "PWYXBW_PWyyyymmddhhmmss.txt";
         System.out.println(s.contains("20201020"));
         System.out.println(s.substring(0,s.length()-10));
+    }
+
+    static void testTF(){
+        String a = "ete_ad";
+        String par2 = "$1.toUpperCase()";
+        System.out.println(a.replaceAll("(_[a-z]?)", par2));
+
     }
 }
