@@ -20,7 +20,7 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        testTF();
+        testSpilt();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -82,9 +82,11 @@ public class StringTest {
      * @since 2020/9/10 16:24
      */
     static void testSpilt() {
-        String str = "打开【主上符合】开关";
+       /* String str = "打开【主上符合】开关";
         String[] split = str.split("[【】]");
-        Arrays.stream(split).forEach(splitStr -> System.out.println(splitStr));
+        Arrays.stream(split).forEach(splitStr -> System.out.println(splitStr));*/
+        String a = "assess_batch*                                                                10kv园区二号线北路分歧4号                                                                                                        *                                                                37999121855938568710*                                                                                                                                PD_10200001_18609567                                                                                                                                                                                                                                             PD_SBID000000A711F3F633B4496C8F29215EF02989E9                                       0            1            0 *                                                                                                                                   0 262176       65545            0        65545        65545        65545                    0                    0                    0                 0.00                 0.00                 0.00    0    0    0 10200001_18609567                                                                                                                -8916725-8916725";
+        Arrays.stream(a.split("\\s")).forEach(System.out::println);
     }
 
     static void testMatch() {
