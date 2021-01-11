@@ -1,6 +1,5 @@
 package com.cloud.strings;
 
-import com.sun.org.apache.xpath.internal.objects.XNull;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        testSpilt();
+        teststr();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -187,5 +186,9 @@ public class StringTest {
         String par2 = "$1.toUpperCase()";
         System.out.println(a.replaceAll("(_[a-z]?)", par2));
 
+    }
+
+    static void teststr(){
+        System.out.println("堃");
     }
 }
