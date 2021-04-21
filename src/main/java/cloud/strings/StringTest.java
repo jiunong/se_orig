@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,7 +20,7 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        teststr();
+        testTF();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -182,10 +183,22 @@ public class StringTest {
     }
 
     static void testTF(){
-        String a = "ete_ad";
-        String par2 = "$1.toUpperCase()";
-        System.out.println(a.replaceAll("(_[a-z]?)", par2));
+        // 按指定模式在字符串查找
+        String line = "eq-abqyoushi一个设备——";
+        String pattern = "eq.*[ab].*";
 
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+
+        /* 现在创建 matcher 对象 */
+        Matcher m = r.matcher(line);
+        int i = 0;
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(i) );
+            i++;
+        } else {
+            System.out.println("NO MATCH");
+        }
     }
 
     static void teststr(){

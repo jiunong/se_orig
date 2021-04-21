@@ -1,7 +1,5 @@
 package cloud.qj;
 
-import com.bocom.pay.BocomClient;
-
 /**
  * TODO
  *
@@ -12,9 +10,9 @@ public class QjTest {
 
 
     public static void main(String[] args) {
-        BocomClient client = new BocomClient();
+       /* BocomClient client = new BocomClient();
         client.initialize("");
-        client.AttachedSign("","");
+        client.AttachedSign("","");*/
     }
 
 }
