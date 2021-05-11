@@ -1,19 +1,18 @@
 package cloud.hutools;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,27 +78,35 @@ public class HuToolTest {
 
 
     static void dateTime() {
+        List<Map<String, Object>> list = ListUtil.list(false);
+        String year = "2021";
         Calendar calendar = Calendar.getInstance();
-        DateTime beginDayOfYear = DateTime.of("20210101", DatePattern.PURE_DATE_PATTERN);
+        DateTime beginDayOfYear = DateTime.of(year + "0101", DatePattern.PURE_DATE_PATTERN);
 
-       while (DateTime.of(beginDayOfYear).dayOfWeek() != 2) {
+        while (DateTime.of(beginDayOfYear).dayOfWeek() != 2) {
             calendar.setTime(beginDayOfYear);
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             beginDayOfYear = DateTime.of(calendar.getTime());
         }
 
         int i = 1;
-        while (beginDayOfYear.before(DateTime.of("20211231", DatePattern.PURE_DATE_PATTERN))
+        while (beginDayOfYear.before(DateTime.of(year + "1231", DatePattern.PURE_DATE_PATTERN))
         ) {
-            String weekStart = DateTime.of(beginDayOfYear).toString(DatePattern.CHINESE_DATE_PATTERN);
+            String weekStart = DateTime.of(beginDayOfYear).toString("MM-dd");
             calendar.setTime(beginDayOfYear);
             calendar.add(Calendar.DAY_OF_YEAR, 6);
-            String weekEnd = DateTime.of(calendar.getTime()).toString(DatePattern.CHINESE_DATE_PATTERN);
-            System.out.println(i + ":" + weekStart + ":" + weekEnd);
+            String weekEnd = DateTime.of(calendar.getTime()).toString("MM-dd");
+
+            HashMap<String, Object> map = MapUtil.newHashMap(false);
+            map.put("CODE", i < 10 ? "0" + i : i);
+            map.put("NOTE", "(" + weekStart + "~" + weekEnd + ")");
+            list.add(map);
+
             i++;
             calendar.add(Calendar.DAY_OF_YEAR, 1);
             beginDayOfYear = DateTime.of(calendar.getTime());
         }
+        list.forEach(u -> System.out.println(u.toString()));
     }
 
 
