@@ -35,7 +35,7 @@ public class HuToolTest {
 
     public static void main(String[] args) {
         //saveRemoteToDataBase();
-        dateTime();
+        test1("9时");
     }
 
     static void saveRemoteToDataBase() {
@@ -109,5 +109,23 @@ public class HuToolTest {
         list.forEach(u -> System.out.println(u.toString()));
     }
 
+    static String H = "HH";  // 9 || 09
+    static String HH = "HH时"; // 9时 || 09时
+    static String HHmm = "HH时mm分"; // 9时30分
+    static String HH_mm = "HH:mm"; //09:22
+
+    static void test1(String time){
+            if(time.contains("分")){
+                System.out.println(DateTime.of(time, HHmm).toString("HH:mm"));
+            }else if(time.contains("时")){
+                System.out.println(DateTime.of(time, HH).toString("HH:mm"));
+            }else if(time.contains(":")){
+                System.out.println(DateTime.of(time, HH_mm).toString("HH:mm"));
+            }else if(time.length()<=2){
+                System.out.println(DateTime.of(time, H).toString("HH:mm"));
+            }else {
+                System.out.println(DateTime.of(time, H).toString("HH:mm"));
+            }
+    }
 
 }

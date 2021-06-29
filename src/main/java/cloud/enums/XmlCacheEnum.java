@@ -2,6 +2,8 @@ package cloud.enums;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * TODO xml模文件标签
@@ -95,7 +97,7 @@ public enum XmlCacheEnum {
     REMOTE_UNIT("RemoteUnit", ""),
     SUB_GEOGRAPHICAL_REGION("SubGeographicalRegion", ""),
 
-    SERVICE_LOATION("ServiceLoation","PD_37100000"),
+    SERVICE_LOATION("ServiceLoation", "PD_37100000"),
 
     /**
      * 开闭站等站点
@@ -110,13 +112,13 @@ public enum XmlCacheEnum {
     SUBSTATION7("Substation", "#PD_34300000"),
 
     /**
-    * 避雷器
-    */
-    SURGEARRESTER("SurgeArrester","#PD_31800001"),
-    SURGEARRESTER1("SurgeArrester","#PD_11600000"),
-    SURGEARRESTER2("SurgeArrester","#PD_31800000"),
+     * 避雷器
+     */
+    SURGEARRESTER("SurgeArrester", "#PD_31800001"),
+    SURGEARRESTER1("SurgeArrester", "#PD_11600000"),
+    SURGEARRESTER2("SurgeArrester", "#PD_31800000"),
 
-    ENERGYCONSUMER("EnergyConsumer","#PD_37000000"),
+    ENERGYCONSUMER("EnergyConsumer", "#PD_37000000"),
 
     TERMINAL("Terminal", ""),
     USAGE_POINT("UsagePoint", "PD_37200000"),
@@ -153,4 +155,27 @@ public enum XmlCacheEnum {
     XmlCacheEnum() {
     }
 
+    /**
+     * TODO 根据psrType获取对应Label
+     *
+     * @param psrType psrType
+     * @return java.lang.String
+     * @author xuhong.ding
+     * @since 2020/9/29 9:08
+     */
+    public static String getLabelByPsrType(String psrType) {
+        String newPsrType = Optional.ofNullable(psrType).map(v -> {
+            return v.startsWith("#") ? v : "#".concat(v);
+        }).map(String::toString).orElse("null");
+        return Arrays.asList( XmlCacheEnum.values()).stream()
+                .filter(u -> u.getPsrType().equals(newPsrType))
+                .map( XmlCacheEnum::getLabel)
+                .findFirst().orElse(null);
+    }
+
+    public static Set<String> getLabels() {
+        return Arrays.stream( XmlCacheEnum.values())
+                .map( XmlCacheEnum::getLabel)
+                .collect(Collectors.toSet());
+    }
 }
