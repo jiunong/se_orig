@@ -1,22 +1,24 @@
 package cloud.datetime;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * TODO
  *
  * @author xuhong.ding
- * @since 2020/10/21 16:10
+ * @since 2020/10/21 16:10`
  */
 public class DateTimeTest {
 
 
     public static void main(String[] args) {
-        test1();
+        try {
+            test2();
+        } catch (Exception e) {
+            System.out.println(1);
+        }
     }
 
     static void test1(){
@@ -26,5 +28,10 @@ public class DateTimeTest {
         System.out.println(date.substring(date.length() - date1.length()-5, date.lastIndexOf(".")));
     }
 
-
+    static void test2() throws Exception{
+        String date = "22";
+        Calendar calendar = DateUtil.parse(date, "yyyy-MM").toCalendar();
+        calendar.add(Calendar.MONTH,1);
+        System.out.println(DateUtil.format(calendar.getTime(), "yyyy-MM"));
+    }
 }

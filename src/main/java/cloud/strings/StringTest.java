@@ -2,6 +2,7 @@ package cloud.strings;
 
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        testTF();
+        testDecimal();
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -30,6 +31,10 @@ public class StringTest {
         //testContains();
     }
 
+    static void testDecimal(){
+        String s = BigDecimal.valueOf((float) 1 * 100 / (2 + 1)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+        System.out.println(s);
+    }
 
     /**
      * TODO 测试replace

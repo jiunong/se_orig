@@ -35,7 +35,8 @@ public class HuToolTest {
 
     public static void main(String[] args) {
         //saveRemoteToDataBase();
-        test1("9时");
+        //test2("19:30");
+        test3();
     }
 
     static void saveRemoteToDataBase() {
@@ -127,5 +128,12 @@ public class HuToolTest {
                 System.out.println(DateTime.of(time, H).toString("HH:mm"));
             }
     }
+    static void test2(String time){
+        System.out.println(DateUtil.parse(time, "H").toString("H"));
+    }
+    static void test3(){
+        char a = (char)65;
 
+        System.out.println(String.valueOf(a));
+    }
 }
