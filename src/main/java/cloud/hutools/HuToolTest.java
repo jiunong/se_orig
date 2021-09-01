@@ -133,7 +133,6 @@ public class HuToolTest {
     }
     static void test3(){
         char a = (char)65;
-
         System.out.println(String.valueOf(a));
     }
 }

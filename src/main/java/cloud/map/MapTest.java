@@ -1,5 +1,7 @@
 package cloud.map;
 
+import cn.hutool.core.map.MapUtil;
+
 import java.util.HashMap;
 
 /**
@@ -12,7 +14,7 @@ public class MapTest {
 
 
     public static void main(String[] args) {
-        test1();
+        test2();
     }
 
 
@@ -27,4 +29,9 @@ public class MapTest {
     }
 
 
+    static void test2(){
+        HashMap<String, String> of = MapUtil.of("key", "dw");
+        HashMap<String, Object> of2 = MapUtil.of("key", "dw");
+        System.out.println(of.get("key").equals(of2.get("key")));
+    }
 }
