@@ -21,7 +21,8 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        testDecimal();
+        haveChineseChar("123");
+        haveChineseChar("tring.split 以正则分割");
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -208,5 +209,16 @@ public class StringTest {
 
     static void teststr(){
         System.out.println("堃");
+    }
+
+    static void haveChineseChar(String s){
+        char[] chars = s.toCharArray();
+        boolean flag = false;
+        int i  =0;
+        while (!flag && i<chars.length){
+            flag = String.valueOf(chars[i]).matches("[\u4e00-\u9fa5]");
+            i++;
+        }
+        System.out.println(String.valueOf(flag));
     }
 }
