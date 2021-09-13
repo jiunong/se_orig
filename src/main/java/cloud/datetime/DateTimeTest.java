@@ -21,7 +21,7 @@ public class DateTimeTest {
 
 
     public static void main(String[] args) {
-       test4(DateTime.of("110101",DatePattern.PURE_TIME_PATTERN));
+       test5();
     }
 
     static void test1(){
@@ -58,4 +58,9 @@ public class DateTimeTest {
                 .concat("_")
                 .concat(String.valueOf(StrictMath.floorDiv(Integer.parseInt(DateUtil.format(date, "mm")), 15)*15));
     }
+
+    static void test5(){
+        System.out.println(DateUtil.dayOfWeek(new Date()));
+    }
+
 }
