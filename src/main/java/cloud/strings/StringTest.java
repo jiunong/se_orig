@@ -1,6 +1,8 @@
 package cloud.strings;
 
 
+import cn.hutool.core.util.ArrayUtil;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,8 +23,8 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        haveChineseChar("123");
-        haveChineseChar("tring.split 以正则分割");
+        //haveChineseChar("123");
+        //haveChineseChar("tring.split 以正则分割");
         //testSpilt();
         //testMatch();
         /*testEndsWith();*/
@@ -32,7 +34,7 @@ public class StringTest {
         //testContains();
     }
 
-    static void testDecimal(){
+    static void testDecimal() {
         String s = BigDecimal.valueOf((float) 1 * 100 / (2 + 1)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         System.out.println(s);
     }
@@ -182,13 +184,13 @@ public class StringTest {
 
     }
 
-    static void testContains(){
+    static void testContains() {
         String s = "PWYXBW_PWyyyymmddhhmmss.txt";
         System.out.println(s.contains("20201020"));
-        System.out.println(s.substring(0,s.length()-10));
+        System.out.println(s.substring(0, s.length() - 10));
     }
 
-    static void testTF(){
+    static void testTF() {
         // 按指定模式在字符串查找
         String line = "eq-abqyoushi一个设备——";
         String pattern = "eq.*[ab].*";
@@ -199,26 +201,47 @@ public class StringTest {
         /* 现在创建 matcher 对象 */
         Matcher m = r.matcher(line);
         int i = 0;
-        if (m.find( )) {
-            System.out.println("Found value: " + m.group(i) );
+        if (m.find()) {
+            System.out.println("Found value: " + m.group(i));
             i++;
         } else {
             System.out.println("NO MATCH");
         }
     }
 
-    static void teststr(){
+    static void teststr() {
         System.out.println("堃");
     }
 
-    static void haveChineseChar(String s){
+    static void haveChineseChar(String s) {
         char[] chars = s.toCharArray();
         boolean flag = false;
-        int i  =0;
-        while (!flag && i<chars.length){
+        int i = 0;
+        while (!flag && i < chars.length) {
             flag = String.valueOf(chars[i]).matches("[\u4e00-\u9fa5]");
             i++;
         }
         System.out.println(String.valueOf(flag));
+    }
+
+    /**
+     * TODO 遍历a
+     *
+     * @param a :
+     * @param b :
+     * @return void
+     * @author xuhong.ding
+     * @since 2021/12/14 14:46
+     **/
+    public static String dmp(String a, String b) {
+        char[] charsA = a.toCharArray();
+        char[] charsB = b.toCharArray();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < charsA.length; i++) {
+            if (ArrayUtil.contains(charsB, charsA[i])) {
+                sb.append(charsA[i]).append(':').append(i).append('-');
+            }
+        }
+        return sb.toString();
     }
 }

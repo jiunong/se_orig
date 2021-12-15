@@ -1,16 +1,24 @@
 package cloud.files;
 
+import cloud.model.FeederEnergyModel;
+import cloud.strings.StringTest;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import javafx.scene.control.Tab;
 import lombok.extern.java.Log;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  * TODO
@@ -23,7 +31,7 @@ public class FileTest {
 
 
     public static void main(String[] args) throws Exception {
-        test6();
+        feederEnergy("E:\\Result_81.html");
     }
 
 
@@ -108,7 +116,36 @@ public class FileTest {
         File file = FileUtil.file("C:\\svg\\response.json");
         boolean json = JSONUtil.isJson(FileUtil.readString(file, CharsetUtil.UTF_8));
         JSONObject jsonObject = JSONUtil.parseObj(FileUtil.readString(file, CharsetUtil.UTF_8));
-        JSONArray list =  (JSONArray)JSONUtil.parseObj(FileUtil.readString(file, CharsetUtil.UTF_8)).get("content");
+        JSONArray list = (JSONArray) JSONUtil.parseObj(FileUtil.readString(file, CharsetUtil.UTF_8)).get("content");
         System.out.println("a");
+    }
+
+    static void feederEnergy(String filePath) {
+        String tab = "\t";
+        String fake = "";
+        File touch = FileUtil.touch("E:\\result.txt");
+        String s = FileUtil.readString(filePath, "UTF-8");
+        Document doc = Jsoup.parse(s);
+        Elements trs = doc.select("tr");
+        for (int i = 1; i < trs.size(); i++) {
+            String energyId = trs.get(i).select("td").get(0).text();
+            if (!fake.equals(energyId)) {
+                fake = energyId;
+                FileUtil.appendUtf8String("\n", touch);
+            }
+            String energyName = trs.get(i).select("td").get(1).text();
+            String stationId = trs.get(i).select("td").get(2).text();
+            String feederId = trs.get(i).select("td").get(3).text();
+            String feederName = trs.get(i).select("td").get(4).text();
+            String stationIdB = trs.get(i).select("td").get(5).text();
+            String contain = StringTest.dmp(feederName, energyName);
+            FileUtil.appendUtf8String(energyId.concat(tab).concat(energyName)
+                            .concat(tab).concat(stationId)
+                            .concat(tab).concat(feederId)
+                            .concat(tab).concat(feederName)
+                            .concat(tab).concat(stationIdB)
+                            .concat(tab).concat(contain).concat("\n")
+                    , touch);
+        }
     }
 }

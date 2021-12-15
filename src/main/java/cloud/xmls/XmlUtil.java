@@ -1,21 +1,21 @@
 package cloud.xmls;
 
 
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.java.Log;
 import org.dom4j.*;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * TODO 处理xml文件相关工具
+ *
  * @author xuhong.ding
  * @since 2020/9/17 11:04
  */
-@Log
 public class XmlUtil {
 
 
@@ -35,7 +35,6 @@ public class XmlUtil {
             dom4j2Json(doc.getRootElement(), json);
             return json.toJSONString();
         } catch (DocumentException e) {
-            log.info("数据解析失败");
         }
         return null;
 
@@ -43,6 +42,7 @@ public class XmlUtil {
 
     /**
      * xml转json
+     *
      * @param xmlStr
      * @return JSONObject
      * @throws DocumentException
@@ -56,6 +56,7 @@ public class XmlUtil {
 
     /**
      * xml转json
+     *
      * @param element
      * @param json
      */
@@ -63,13 +64,12 @@ public class XmlUtil {
         // 如果是属性
         for (Object o : element.attributes()) {
             Attribute attr = (Attribute) o;
-            /*if (StringUtils.hasText(attr.getValue())) {*/
-            if (StringUtils.hasText(attr.getValue())) {
+            if (StrUtil.isNotEmpty(attr.getValue())) {
                 json.put(attr.getName(), attr.getValue());
             }
         }
         List<Element> chdEl = element.elements();
-        if (chdEl.isEmpty() && StringUtils.hasText(element.getText())) {// 如果没有子元素,只有一个值
+        if (chdEl.isEmpty() && StrUtil.isNotEmpty(element.getText())) {// 如果没有子元素,只有一个值
             json.put(element.getName(), element.getText());
         }
 
@@ -101,11 +101,26 @@ public class XmlUtil {
             } else {// 子元素没有子元素
                 for (Object o : element.attributes()) {
                     Attribute attr = (Attribute) o;
-                    if (StringUtils.hasText(attr.getValue())) {
+                    if (StrUtil.isNotEmpty(attr.getValue())) {
                         json.put(attr.getName(), attr.getValue());
                     }
                 }
-                json.put(e.getName(), e.getText().isEmpty() ? Optional.ofNullable(e.attribute(0)).map(Node::getText).orElse("") : e.getText());
+                // 如果存在当前属性 则形成集合填充
+                if (json.containsKey(e.getName())) {
+                    Object o = json.get(e.getName());
+                    List<Object> list = ListUtil.list(false);
+                    if (o instanceof Object) {
+                        list.add(o);
+                    }
+                    if (o instanceof List) {
+                        list = (List<Object>) json.get(e.getName());
+                        list.add(e.getText().isEmpty() ? Optional.ofNullable(e.attribute(0)).map(Node::getText).orElse("") : e.getText());
+                    }
+                    json.put(e.getName(), list);
+                } else {
+                    json.put(e.getName(), e.getText().isEmpty() ? Optional.ofNullable(e.attribute(0)).map(Node::getText).orElse("") : e.getText());
+
+                }
             }
         }
     }
