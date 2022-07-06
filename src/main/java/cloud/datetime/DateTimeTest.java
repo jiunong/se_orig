@@ -3,8 +3,15 @@ package cloud.datetime;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * TODO
@@ -16,7 +23,21 @@ public class DateTimeTest {
 
 
     public static void main(String[] args) {
-       test5();
+       test6();
+       //now.format(DateTimeFormatter.ofPattern("yyyyMMddhh1500"))
+        //now.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        //now.getMinute()
+    }
+
+
+    static void test6() {
+        LocalDate now1 = LocalDate.now();
+        String yyyyMMdd = LocalDate.now().plus(-1, ChronoUnit.DAYS).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String yyyyMMdd2 = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        LocalDateTime now = LocalDateTime.now();
+        LocalTime now2 = LocalTime.now();
+        Instant now3 = Instant.now();
+        System.out.println("Now is now " + now1);
     }
 
     static void test1(){

@@ -28,8 +28,8 @@ public class XmlTest {
     static void test() throws DocumentException {
         String url1 = "F:\\data\\112北骆变城内线单线图.sln.xml";
         String url2 = "F:\\data\\112北骆变城内线单线图2.sln.xml";
-        JSONObject xml1 = XmlUtil2.xmlJsonObj(FileUtil.readUtf8String(url1));
-        JSONObject xml2 = XmlUtil2.xmlJsonObj(FileUtil.readUtf8String(url2));
+        JSONObject xml1 = XmlUtil.xmlJsonObj(FileUtil.readUtf8String(url1));
+        JSONObject xml2 = XmlUtil.xmlJsonObj(FileUtil.readUtf8String(url2));
         XmlCacheEnum.getLabels().forEach(u -> {
             List<JSONObject> list = ListUtil.list(false);
             List<JSONObject> list2 = ListUtil.list(false);
