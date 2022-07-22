@@ -1,5 +1,6 @@
 package cloud.hutools;
 
+import cloud.model.FeederEnergyModel;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.CalendarUtil;
 import cn.hutool.core.date.DatePattern;
@@ -9,6 +10,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharsetUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 
 import java.io.File;
@@ -36,7 +38,12 @@ public class HuToolTest {
     public static void main(String[] args) {
         //saveRemoteToDataBase();
         //test2("19:30");
-        test3();
+        test();
+    }
+
+    static void test(){
+        FeederEnergyModel build = FeederEnergyModel.builder().energyId("1").energyName("2").build();
+        System.out.println(ReflectUtil.getFieldValue(build, "energyId"));
     }
 
     static void saveRemoteToDataBase() {

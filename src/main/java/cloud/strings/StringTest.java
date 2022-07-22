@@ -1,13 +1,12 @@
 package cloud.strings;
 
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,7 +21,8 @@ public class StringTest {
 
 
     public static void main(String[] args) throws Exception {
-
+        HashMap<String, Object> of = MapUtil.of("a", "b");
+        System.out.println(of.get("a") instanceof  Map ? "yes" : "no");
         //haveChineseChar("123");
         //haveChineseChar("tring.split 以正则分割");
         //testSpilt();

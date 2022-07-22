@@ -14,6 +14,7 @@ public class EnumTest {
 
     public static void main(String[] args) {
         Arrays.stream(XmlCacheEnum.values()).map(XmlCacheEnum::getLabel).distinct().forEach(System.out::println);
+        System.out.println(AreaEnum.getByTypeId("3").getaId());
     }
 
 }

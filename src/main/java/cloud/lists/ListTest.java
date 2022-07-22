@@ -5,9 +5,7 @@ import cn.hutool.core.collection.ListUtil;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -20,7 +18,24 @@ public class ListTest {
 
 
     public static void main(String[] args) {
-        test1();
+        Map map = new HashMap(){{
+            put("name", new HashMap<String, String>() {{
+                put("value","");
+                put("value","");
+            }});
+            put("name2", new HashMap<String, String>() {{
+                put("value","");
+                put("value","");
+            }});
+            put("name3", new HashMap<String, String>() {{
+                put("value","");
+                put("value","");
+            }});
+            put("name4", new HashMap<String, String>() {{
+                put("value","");
+                put("value","");
+            }});
+        }};
     }
 
     static void test1() {

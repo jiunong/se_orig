@@ -21,9 +21,16 @@ import java.util.List;
 public class XmlTest {
 
 
-    public static void main(String[] args) throws DocumentException {
-        test();
+    public static void main(String[] args) throws Exception {
+        test1();
     }
+
+    static void test1() throws Exception{
+        JSONObject jsonObject = XmlUtil.xmlJsonObj(FileUtil.readUtf8String("/Users/mac/Desktop/人员信息表_邓厚军.doc"));
+        System.out.println(1);
+
+    }
+
 
     static void test() throws DocumentException {
         String url1 = "F:\\data\\112北骆变城内线单线图.sln.xml";

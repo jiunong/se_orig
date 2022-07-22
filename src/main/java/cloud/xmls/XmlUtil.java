@@ -35,6 +35,7 @@ public class XmlUtil {
             dom4j2Json(doc.getRootElement(), json);
             return json.toJSONString();
         } catch (DocumentException e) {
+            System.err.println("数据解析失败");
         }
         return null;
 
@@ -111,6 +112,7 @@ public class XmlUtil {
                     List<Object> list = ListUtil.list(false);
                     if (o instanceof Object) {
                         list.add(o);
+                        list.add(e.getText().isEmpty() ? Optional.ofNullable(e.attribute(0)).map(Node::getText).orElse("") : e.getText());
                     }
                     if (o instanceof List) {
                         list = (List<Object>) json.get(e.getName());
@@ -124,6 +126,5 @@ public class XmlUtil {
             }
         }
     }
-
 
 }
