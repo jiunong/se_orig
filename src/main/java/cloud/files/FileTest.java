@@ -4,6 +4,7 @@ import cloud.model.FeederEnergyModel;
 import cloud.strings.StringTest;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
@@ -31,7 +32,10 @@ public class FileTest {
 
 
     public static void main(String[] args) throws Exception {
-        feederEnergy("E:\\Result_81.html");
+        List<File> files = FileUtil.loopFiles("C:\\Users\\Administrator\\Desktop\\sql\\sql", u -> u.getName().contains("mybatis_log"));
+        files.forEach(u->{
+            System.out.println(u.getAbsoluteFile());
+        });
     }
 
 
@@ -119,6 +123,18 @@ public class FileTest {
         JSONArray list = (JSONArray) JSONUtil.parseObj(FileUtil.readString(file, CharsetUtil.UTF_8)).get("content");
         System.out.println("a");
     }
+    static void test7() {
+        List<File> files = FileUtil.loopFiles("C:\\Users\\Administrator\\Desktop\\yxbw");
+        files.stream().parallel().forEach(u -> {
+            FileReader fileReader = new FileReader(u, CharsetUtil.GBK);
+            String text = fileReader.readString();
+            if (text.contains("<dms_cb_device_yx>")) {
+                System.out.println(u.getName()+"包含");
+            }else {
+                FileUtil.del(u);
+            };
+        });
+    }
 
     static void feederEnergy(String filePath) {
         String tab = "\t";
@@ -148,4 +164,5 @@ public class FileTest {
                     , touch);
         }
     }
+
 }

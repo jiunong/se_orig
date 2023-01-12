@@ -3,6 +3,7 @@ package cloud.strings;
 
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -23,6 +24,7 @@ public class StringTest {
     public static void main(String[] args) throws Exception {
         HashMap<String, Object> of = MapUtil.of("a", "b");
         System.out.println(of.get("a") instanceof  Map ? "yes" : "no");
+        System.out.println(StrUtil.join("-",StrUtil.split("abc", 1)));
         //haveChineseChar("123");
         //haveChineseChar("tring.split 以正则分割");
         //testSpilt();
