@@ -1,6 +1,7 @@
 package cloud.strings;
 
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
@@ -25,6 +26,10 @@ public class StringTest {
         HashMap<String, Object> of = MapUtil.of("a", "b");
         System.out.println(of.get("a") instanceof  Map ? "yes" : "no");
         System.out.println(StrUtil.join("-",StrUtil.split("abc", 1)));
+        File file = new File("D:\\\\data\\\\朱碌科东线单线图.sln.svg");
+        String name = file.getName();
+        String[] split = name.split("\\.");
+
         //haveChineseChar("123");
         //haveChineseChar("tring.split 以正则分割");
         //testSpilt();
@@ -34,6 +39,7 @@ public class StringTest {
         //readToStringFileInputStream("F:\\python\\dms_yx_nx.E");
         //readToStringBufferedReader();
         //testContains();
+        System.out.println(1);
     }
 
     static void testDecimal() {

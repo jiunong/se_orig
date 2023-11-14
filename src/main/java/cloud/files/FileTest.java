@@ -1,25 +1,28 @@
 package cloud.files;
 
-import cloud.model.FeederEnergyModel;
 import cloud.strings.StringTest;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import javafx.scene.control.Tab;
 import lombok.extern.java.Log;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
+import net.sourceforge.pinyin4j.PinyinHelper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 /**
  * TODO
@@ -32,10 +35,71 @@ public class FileTest {
 
 
     public static void main(String[] args) throws Exception {
-        List<File> files = FileUtil.loopFiles("C:\\Users\\Administrator\\Desktop\\sql\\sql", u -> u.getName().contains("mybatis_log"));
-        files.forEach(u->{
-            System.out.println(u.getAbsoluteFile());
+        file50();
+    }
+
+
+    static void testSt() {
+        String file = "C:\\Users\\76052\\Desktop\\st.txt";
+        List<String> strings = FileUtil.readLines(file, CharsetUtil.UTF_8);
+        for (int i = 0; i < strings.size(); i++) {
+            pinyin(strings.get(i), i + 12);
+        }
+    }
+
+    static void pinyin(String sentence, int i) {
+        StringBuilder pinyin = new StringBuilder();
+        for (char c : sentence.toCharArray()) {
+            if (Character.toString(c).matches("[\\u4E00-\\u9FA5]+")) { // 判断是否为汉字
+                String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
+                if (pinyinArray != null) {
+                    pinyin.append(pinyinArray[0].charAt(0));
+                }
+            } else {
+                pinyin.append(c);
+            }
+        }
+
+        System.out.println(pinyin.toString()
+                + '\t' + sentence
+                + '\t' + i
+                + '\t' + "null"
+                + '\t' + "root"
+                + '\t' + "2022-10-10 14:24:39.935000"
+                + '\t' + "0"
+                + '\t' + sentence
+                + '\t' + 3
+                + '\t' + "PD"
+                + '\t' + "0"
+                + '\t' + "Y"
+                + '\t' + "Y"
+                + '\t' + "null"
+                + '\t' + "0"
+        );
+    }
+
+    static void testNr2() {
+        List<File> files = FileUtil.loopFiles("D:/data/", u -> u.getName().startsWith("102道杨线单线图"));
+        String s = "D:/data/bydate/20230712/150544-TM-102道杨线单线图.sln.svg".replaceAll("/", "s");
+        System.out.printf("", s);
+    }
+
+    static void testNr() {
+        String sp = "-TM-";
+        String key = "anshan_海城市_民政二线单线图.sln.svg";
+        String nrSvgDir = "D:\\data\\";
+        List<File> files = FileUtil.loopFiles(nrSvgDir, f -> !f.getName().contains(sp));
+        //遍历每个文件 按照文件最后编辑时间 存储至当天文件夹
+        files.forEach(f -> {
+            DateTime fileDate = DateTime.of(f.lastModified());
+            String date = nrSvgDir.concat("bydate\\").concat(fileDate.toString(DatePattern.PURE_DATE_PATTERN)).concat("\\");
+            if (!FileUtil.exist(date)) {
+                FileUtil.mkdir(date);
+            }
+            FileUtil.copy(f, FileUtil.file(date.concat(fileDate.toString(DatePattern.PURE_TIME_FORMAT)).concat(sp).concat(f.getName())), true);
         });
+        String file2 = FileUtil.loopFiles(nrSvgDir, f -> f.getName().contains(key)).stream().sorted(Comparator.comparing(File::lastModified).reversed()).sorted(Comparator.comparing(File::getName)).findFirst().map(File::getAbsolutePath).orElse("");
+        System.out.println(file2);
     }
 
 
@@ -83,7 +147,6 @@ public class FileTest {
             System.out.println(v.lastModified());//修改时间
             FileUtil.move(FileUtil.file(svgTomcat + v.getName()), FileUtil.file(svgBak + v.getName()), true);
             log.info("svgTomcat->svgBak");
-
             FileUtil.move(v, FileUtil.file(svgTomcat + v.getName()), true);
             log.info("svgNr->svgTomcat");
         });
@@ -123,16 +186,18 @@ public class FileTest {
         JSONArray list = (JSONArray) JSONUtil.parseObj(FileUtil.readString(file, CharsetUtil.UTF_8)).get("content");
         System.out.println("a");
     }
+
     static void test7() {
         List<File> files = FileUtil.loopFiles("C:\\Users\\Administrator\\Desktop\\yxbw");
         files.stream().parallel().forEach(u -> {
             FileReader fileReader = new FileReader(u, CharsetUtil.GBK);
             String text = fileReader.readString();
             if (text.contains("<dms_cb_device_yx>")) {
-                System.out.println(u.getName()+"包含");
-            }else {
+                System.out.println(u.getName() + "包含");
+            } else {
                 FileUtil.del(u);
-            };
+            }
+            ;
         });
     }
 
@@ -165,4 +230,42 @@ public class FileTest {
         }
     }
 
+    /**
+     *
+     */
+    static void file50() {
+        String[] industryTerms = {"云计算", "人工智能", "生物技术", "电子工程", "医学影像", "量子计算", "区块链", "环境科学", "金融风控", "材料科学",
+                "电子商务", "人工智能", "机器学习", "区块链", "物联网", "云计算", "虚拟现实", "生物技术", "智能制造", "新能源"};
+        String fileName = "";
+        int fileCount = 0; // 已生成文件数
+        Random random = new Random();
+        while (fileCount < 50) { // 随机选取一个行业专用名词
+            int termIndex = random.nextInt(industryTerms.length);
+            int termIndex2 = random.nextInt(industryTerms.length);
+            String term = industryTerms[termIndex]; // 构造文件名（随机选取一个字作为前缀，保证文件名大于6个汉字）
+            String term2 = industryTerms[termIndex2]; // 构造文件名（随机选取一个字作为前缀，保证文件名大于6个汉字）
+            String prefix = "";
+            if (term.length() > 6) {
+                prefix = term.substring(random.nextInt(term.length() - 6), random.nextInt(term.length() - 1));
+            } else {
+                prefix = term;
+            }
+            fileName = prefix+term2 + ".doc";
+            File file = new File(fileName);
+            try { // 创建文件并写入内容（内容为行业专用名词）
+                FileWriter writer = new FileWriter(file);
+                writer.write(term);
+                writer.close();
+                System.out.println("Created file: " + fileName);
+                fileCount++;
+            } catch (IOException e) {
+                System.out.println("Error creating file: " + fileName);
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Generated 50 files.");
+    }
 }
+
+
+
