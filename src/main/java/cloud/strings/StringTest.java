@@ -1,10 +1,12 @@
 package cloud.strings;
 
 
+import cloud.singleton.Mmdd;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
+import net.sourceforge.pinyin4j.PinyinHelper;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -23,12 +25,19 @@ public class StringTest {
 
 
     public static void main(String[] args) throws Exception {
-        HashMap<String, Object> of = MapUtil.of("a", "b");
-        System.out.println(of.get("a") instanceof  Map ? "yes" : "no");
-        System.out.println(StrUtil.join("-",StrUtil.split("abc", 1)));
-        File file = new File("D:\\\\data\\\\朱碌科东线单线图.sln.svg");
-        String name = file.getName();
-        String[] split = name.split("\\.");
+
+        System.out.println(containEachOther("智慧944智于乙线,智于甲线,智慧944智校线".split(","), "智校线".split(",")));
+
+        //ystem.out.printf("总计{}条变压器，目前是第{}个", 1, 2);
+
+
+        //ystem.out.println(ListUtil.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).subList(0, 4));
+        //ashMap<String, Object> of = MapUtil.of("a", "b");
+        //ystem.out.println(of.get("a") instanceof  Map ? "yes" : "no");
+        //ystem.out.println(StrUtil.join("-",StrUtil.split("abc", 1)));
+        //ile file = new File("D:\\\\data\\\\朱碌科东线单线图.sln.svg");
+        //tring name = file.getName();
+        //tring[] split = name.split("\\.");
 
         //haveChineseChar("123");
         //haveChineseChar("tring.split 以正则分割");
@@ -39,9 +48,45 @@ public class StringTest {
         //readToStringFileInputStream("F:\\python\\dms_yx_nx.E");
         //readToStringBufferedReader();
         //testContains();
-        System.out.println(1);
+      /*  String sentence = "iD编号\n身份识别码\n实物Id\n上报单位\n地区\n厂站名称\n厂站类型\n厂站电压等级\n一次设备类型\n一次设备名称\n一次设备电压等级\n跳闸关系\n制造厂家\n保护类别\n保护类别细化\n设备功能配置\n所属安控系统调度命名\n安控站点名\n安控站点类型\n信息是否接入调度主站\n保护型号\n保护类别\n保护分类\n软件版本\n是否六统一设备\n六统一标准版本\n保护名称\n通道信息\n设备属性\n投运时间\n定期检验周期\n上次检验时间\n运行单位\n维护单位\n设计单位\n基建单位\n线路长度\n母线条数\n运行状态\n是否退出运行\n退出运行时间\n厂站管理单位\n厂站最高电压等级\n出厂日期\n出厂编号\n直流额定电压\nCT二次额定电流\n所在屏柜\n实际变比\n额定变比\n准确级\n电源插件型号\n电源插件更换日期\n测距形式\n故障录波器类型\n模拟通道数\n数字通道数\n资产性质\n资产单位\n出口方式\n数据采集方式\n名称属性\n保护套别\n资产编号\n上次检验类型\n上次检验单位\n下次检验类型\n下次检验时间\n新投运日期\n是否统计运行时间\nICD文件名称\n板卡数量\n选配\n场站属性\n是否使用国调下发型号\n备注\n标记\n开关信息\n开入量信息\n装置类型\n装置动作信息上送调度端\n装置告警信息上送调度端\n装置软压板信息上送调度端\n计划接入时间\n低频减载轮次\n动作定值\n典型负荷水平\ncutPrimariEquipmentId\ncutPrimariEquipmentName\n重要用户负荷所占比例\n民生负荷所占比例\n属于有序用电方案\n属于01号事故拉闸序位表\n自动化低频减载监视画面\n";
+        System.out.println(sentence);
+        StringBuilder pinyin = new StringBuilder();
+        for (char c : sentence.toCharArray()) {
+            if (Character.toString(c).matches("[\\u4E00-\\u9FA5]+")) { // 判断是否为汉字
+                String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
+                if (pinyinArray != null) {
+                    pinyin.append(pinyinArray[0].charAt(0));
+                }
+            } else {
+                pinyin.append(c);
+            }
+        }
+        System.out.println(pinyin);*/
+        //testPmsUrl();
+        //testPmsUrl2("ewogICJhbGciIDogIkhTMjU2Igp9.ewogICJpc3MiIDogIjdkNjg0YmQ1ZmRmNzExZWRhZWUwOGUwZjYyZmNiMzg4IiwKICAic3ViIiA6ICI3ZDY4NGJkNWZkZjcxMWVkYWVlMDhlMGY2MmZjYjM4OCIsCiAgImlhdCIgOiAxNzEwODk5MDM3Mjc2LAogICJleHAiIDogNzIwMCwKICAianRpIiA6IDEyMwp9.s7lpbsVqKRmWahMS+cp3aFDOYMTkM77JBp6SujMeoGs=");
     }
 
+
+    private static boolean containEachOther(String[] str1, String[] str2) {
+        return Arrays.stream(str1).anyMatch(u -> has(str2, u)) || Arrays.stream(str2).anyMatch(u ->has(str1, u));
+    }
+
+    private static boolean has(String[] str1, String str){
+        return Arrays.stream(str1).anyMatch(s -> s.contains(str));
+    }
+
+    static void testPmsUrl(){
+        String urlBase = "curl -v -X POST http://25.67.146.223:30020/baseCenter/oauth2/accessToken -H \"Content-Type:application/json\" -d'{ \"password\":\"无\", \"grant_type\":\"client_credentials\", \"client_secret\":\"OGt0nlkjpBeFMvotOEDJgjj8zQ/3/5QsGEwwv4jYC3cWSadcX0we2wffjyTUYGsK\", \"client_id\":\"7d684bd5fdf711edaee08e0f62fcb388\", \"username\":\"无\"}'";
+        System.out.println(urlBase);
+    }
+    static void testPmsUrl2(String tk){
+        String urlBase = "curl -v -X POST http://25.67.146.223:30020/PSRCenter/queryServices/listPropertiesByFilters -H \"Content-Type:application/json\" -H \"x-token:"
+                + tk
+                + "\" -d'{\"params\": {\"current\": 1,\"fields\": \"\",\"filters\": "
+                +"[{\"compare\":\"like\",\"fieldName\":\"name\",\"fieldValue\":\"%10kV鹏欣线%\"},{\"compare\":\"=\",\"fieldName\":\"voltageLevel\",\"fieldValue\":\"22\"}],"
+                +"\"orderBy\": \"\",\"page\": 1,\"perpage\": 50,\"size\": 2},\"psrType\": \"xl\",\"distribution\":0}'";
+        System.out.println(urlBase);
+    }
     static void testDecimal() {
         String s = BigDecimal.valueOf((float) 1 * 100 / (2 + 1)).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
         System.out.println(s);
@@ -151,10 +196,10 @@ public class StringTest {
      * @since 2020/11/24 8:26
      */
     static void testsp() {
-        String var = "#\tNULL\t3800756610523992894\t四平 乙线37+1#-四平乙线38#\tPD_10100000_797628\t0\t-8991449\t-8991434\t\n" +
-                "112871465660973063\t0\t0.000000\t3799912185593856062";
+        String var = "#\nNULL\n3800756610523992894\n四平 乙线37+1#-四平乙线38#\nPD_10100000_797628\n0\n-8991449\n-8991434\n\n" +
+                "112871465660973063\n0\n0.000000\n3799912185593856062";
 
-        String[] split = var.split("\\t+");
+        String[] split = var.split("\\n+");
         String[] splits = var.split("\\s");
         Arrays.asList(split).stream().forEach(u -> {
             System.out.println(u);

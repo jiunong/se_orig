@@ -35,15 +35,33 @@ public class FileTest {
 
 
     public static void main(String[] args) throws Exception {
-        file50();
+        test4();
     }
 
 
-    static void testSt() {
+    /**
+     *  TODO 文件内容转汉语拼音
+     */
+    static void changeContentPinyin() {
         String file = "C:\\Users\\76052\\Desktop\\st.txt";
         List<String> strings = FileUtil.readLines(file, CharsetUtil.UTF_8);
         for (int i = 0; i < strings.size(); i++) {
             pinyin(strings.get(i), i + 12);
+        }
+    }
+
+
+    /**
+     * TODO 文件夹下所有文件名称
+     */
+    static void getFileNameList(){
+        String fileDir = "C:\\Users\\76052\\Desktop\\检查\\计算所\\8-营口\\（营口四季度）配网调控制度落实情况\\配调\\设备异动\\";
+        List<File> files = FileUtil.loopFiles(fileDir);
+        for (File file : files) {
+            String name = file.getName();
+            int index = name.indexOf("线");
+            System.out.println(file.getName());
+            System.out.println(index>0 ? name.substring(0,index): file.getName());
         }
     }
 
@@ -160,10 +178,9 @@ public class FileTest {
     }
 
     static void test4() {
-        String svgNr = "F:\\data\\svgNr\\";
-        String svgTomcat = "F:\\data\\svgTomcat\\";
-        String svgNrBak = "F:\\data\\svgNrBak\\";
-        FileUtil.copyFilesFromDir(FileUtil.file(svgNr), FileUtil.file(svgNrBak), true);
+        String svgNr = "E:\\apache-tomcat-7.0.109-windows-x64\\apache-tomcat-7.0.109\\webapps\\omspdjx_upload\\gis_data\\gis_data\\";
+        String svgTomcat = "E:\\apache-tomcat-7.0.109-windows-x64\\apache-tomcat-7.0.109\\webapps\\omspdjx_upload\\svg\\";
+        FileUtil.copyFilesFromDir(FileUtil.file(svgNr), FileUtil.file(svgTomcat), true);
         /*List<File> files = FileUtil.loopFiles(Paths.get(svgNr), 1, null);
         files.forEach(u->{
             FileUtil.copy(u,FileUtil.file(svgNrBak),true);

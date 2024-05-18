@@ -2,8 +2,10 @@ package cloud.excel;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * TODO
@@ -18,6 +20,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ExcelModel {
 
     @ExcelProperty("单位名称")
@@ -55,8 +59,10 @@ public class ExcelModel {
     private String column9;
 
 
+    @ExcelProperty("线路名称")
     private String column10;
 
+    @ExcelProperty("检修线路")
     private String column11;
 
     private String column12;
