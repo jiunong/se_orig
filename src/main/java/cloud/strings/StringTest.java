@@ -28,7 +28,16 @@ public class StringTest {
 
         System.out.println(containEachOther("智慧944智于乙线,智于甲线,智慧944智校线".split(","), "智校线".split(",")));
 
-        //ystem.out.printf("总计{}条变压器，目前是第{}个", 1, 2);
+        List<String> list = new ArrayList<>();
+        list.add("1");
+        list.add("2");
+        for (String item : list) {
+            if ("2".equals(item)) {
+                list.remove(item);
+            }
+        }
+
+        System.out.printf("总计{}条变压器，目前是第{}个", 1, 2);
 
 
         //ystem.out.println(ListUtil.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).subList(0, 4));

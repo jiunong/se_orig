@@ -2,6 +2,7 @@ package cloud.xmls;
 
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -18,6 +19,10 @@ import java.util.Optional;
  */
 public class XmlUtil {
 
+
+    public static void main(String[] args) throws DocumentException {
+        xmlJsonObj(FileUtil.readUtf8String("C:\\svg\\6.xml"));
+    }
 
     /**
      * TODO xml 转成 json串

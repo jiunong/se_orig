@@ -26,5 +26,4 @@ public class HttpTest {
         String body = HttpUtil.createPost(url).contentType("application/json;charset=UTF-8;").body(s).execute().body();
         System.out.println(body);
     }
-
 }
