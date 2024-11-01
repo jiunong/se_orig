@@ -103,7 +103,7 @@ public class XmlTest {
         } else if (o instanceof JSONObject) {
             list.add((JSONObject) o);
         } else if (o instanceof String) {
-            //list.add(JSONObject.parseObject(o.toString()));
+            list.add(JSONObject.parseObject(o.toString()));
         } else {
             list.addAll((List<JSONObject>) o);
         }

@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * TODO
@@ -26,18 +27,6 @@ public class StringTest {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(containEachOther("智慧944智于乙线,智于甲线,智慧944智校线".split(","), "智校线".split(",")));
-
-        List<String> list = new ArrayList<>();
-        list.add("1");
-        list.add("2");
-        for (String item : list) {
-            if ("2".equals(item)) {
-                list.remove(item);
-            }
-        }
-
-        System.out.printf("总计{}条变压器，目前是第{}个", 1, 2);
 
 
         //ystem.out.println(ListUtil.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).subList(0, 4));
@@ -73,10 +62,124 @@ public class StringTest {
         System.out.println(pinyin);*/
         //testPmsUrl();
         //testPmsUrl2("ewogICJhbGciIDogIkhTMjU2Igp9.ewogICJpc3MiIDogIjdkNjg0YmQ1ZmRmNzExZWRhZWUwOGUwZjYyZmNiMzg4IiwKICAic3ViIiA6ICI3ZDY4NGJkNWZkZjcxMWVkYWVlMDhlMGY2MmZjYjM4OCIsCiAgImlhdCIgOiAxNzEwODk5MDM3Mjc2LAogICJleHAiIDogNzIwMCwKICAianRpIiA6IDEyMwp9.s7lpbsVqKRmWahMS+cp3aFDOYMTkM77JBp6SujMeoGs=");
+
+        System.out.println(isSameLine2("营口.汤池祝家线1033", "汤池变1033祝家线"));
+        System.out.println(isSameLine2("营口.汤池祝家线", "汤池变1033祝家线"));
+        System.out.println(isSameLine2("祝家线", "汤池变1033祝家线"));
+        System.out.println(isSameLine2("新城新城变1030新业甲线", "新城变1030新业甲线"));
+        System.out.println(isSameLine2("营口.团甸团甸线", "团甸变1030团甸线"));
+        System.out.println(isSameLine2("营口.红海红海变4354永安甲线", "红海变4354永安甲线"));
+        System.out.println(isSameLine2("水城甲线", "变电站712水城甲线"));
+        System.out.println(isSameLine2("水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
+        System.out.println(isSameLine2("营口.变电站712水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
     }
 
+    public static boolean isSameLine2(String str1, String str2) {
+
+        return containEachOther(str1.split("(\\d+)"),str2.split("(\\d+)"));
+    }
+    private static Set<String> extractMainParts(String str) {
+        // 使用正则表达式移除所有非字母数字字符
+        String cleanedStr = str.replaceAll("[^a-zA-Z0-9]", " ").trim();
+
+        // 创建一个模式来匹配单词部分
+        Pattern pattern = Pattern.compile("(\\w+)");
+        Matcher matcher = pattern.matcher(cleanedStr);
+
+        // 使用 HashSet 存储所有匹配的单词部分
+        Set<String> parts = new HashSet<>();
+        while (matcher.find()) {
+            String part = matcher.group().toLowerCase(); // 转换为小写以忽略大小写差异
+            if (!part.matches("^\\d+$")) { // 排除纯数字
+                parts.add(part);
+            }
+        }
+
+        // 如果存在纯数字的部分，也加入到集合中，以便匹配带编号的线路名称
+        String[] words = cleanedStr.split("\\s+");
+        for (String word : words) {
+            if (word.matches("^\\d+$")) { // 只包含数字的部分
+                parts.add(word);
+            }
+        }
+
+        return parts;
+    }
+
+    public static boolean isSameLine22(String str1, String str2) {
+        // 将字符串按照非字母数字字符进行分割
+        String[] parts1 = str1.split("\\W+");
+        String[] parts2 = str2.split("\\W+");
+
+        // 移除任何数字部分后，剩下的部分应该完全匹配
+        String nonNumericPart1 = Arrays.stream(parts1)
+                .filter(part -> !part.matches("^\\d+$"))
+                .reduce((a, b) -> a + b)
+                .orElse("");
+        String nonNumericPart2 = Arrays.stream(parts2)
+                .filter(part -> !part.matches("^\\d+$"))
+                .reduce((a, b) -> a + b)
+                .orElse("");
+
+        // 比较去除数字部分之后的字符串是否相同
+        return nonNumericPart1.equalsIgnoreCase(nonNumericPart2);
+    }
+    public static boolean isSameLine2222(String str1, String str2) {
+        // 如果两个字符串完全相同，直接返回true
+        if (str1.equals(str2)) {
+            return true;
+        }
+
+        // 分割字符串为数组，这里假设线路名称中的数字和其他部分之间通过非字母数字字符（如空格或点）分割
+        String[] parts1 = str1.split("[^a-zA-Z0-9]+");
+        String[] parts2 = str2.split("[^a-zA-Z0-9]+");
+
+        // 如果分割后的数组长度不同，则不可能是相同的线路
+        if (parts1.length != parts2.length) {
+            return false;
+        }
+
+        // 对于每个部分，检查是否存在于另一个字符串中
+        for (String part : parts1) {
+            if (!str2.contains(part)) {
+                return false;
+            }
+        }
+
+        for (String part : parts2) {
+            if (!str1.contains(part)) {
+                return false;
+            }
+        }
+
+        // 如果所有部分都存在，则认为是相同的线路
+        return true;
+    }
+
+    /**
+     * @param str1                变压器对应线路  （线路1,线路2）  营口.汤池祝家线1033
+     * @param str2                计划以及调度命名中的线路名 （国门湾变国汉一线、国汉二线）  汤池变1033祝家线
+     * @param feederNameMatchList 线下线路名称对应
+     */
+    private static boolean containEachOther(String str1, String str2 ) {
+        boolean rs = false;
+        if (StrUtil.isEmpty(str1) || StrUtil.isEmpty(str2)) {
+            return false;
+        }
+        str1 = str1.toLowerCase();
+        str2 = str2.toLowerCase();
+
+
+        if (str1.contains(str2) || str2.contains(str1)) {
+            return true;
+        }
+        String[] s2s = str2.split("、|，|\n|；|,");
+        StringBuilder jdStr = new StringBuilder();
+        return containEachOther(str1.toLowerCase(), str2.concat(",").concat(jdStr.toString()).toLowerCase());
+    }
 
     private static boolean containEachOther(String[] str1, String[] str2) {
+
         return Arrays.stream(str1).anyMatch(u -> has(str2, u)) || Arrays.stream(str2).anyMatch(u ->has(str1, u));
     }
 
