@@ -21,5 +21,12 @@ public class Tst {
         }
         return new int[]{a, b};
     }
-
+    
+    /**
+     * 两个数相加
+     */
+    public int add(int a, int b) {
+        return a + b;
+    }
+    
 }

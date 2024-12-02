@@ -10,6 +10,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
+import static cn.hutool.core.date.DateField.MONTH;
+import static cn.hutool.core.date.DateField.YEAR;
+
 /**
  * TODO
  *
@@ -19,20 +22,20 @@ import java.util.Date;
 public class DateTimeTest {
 
 
+    /**
+     * 获取当前月份的上一个月份，如果当前月份是1月，则返回上一年12月，利用hutool工具实现
+     * @param args
+     */
+    public static void getLastMonth(String date) {
+        DateTime parse = DateUtil.parse(date);
+        System.out.println( DateUtil.offsetMonth(parse,-1).month()+1);
+        System.out.println(parse.month()>0?parse.year():DateUtil.offset(parse,YEAR,-1).year());
+
+    }
+
     public static void main(String[] args) {
-        test6();
-        getCurrentBatch("2024-01-01");
-        getCurrentBatch("2024-02-01");
-        getCurrentBatch("2024-03-01");
-        getCurrentBatch("2024-04-01");
-        getCurrentBatch("2024-05-01");
-        getCurrentBatch("2024-06-01");
-        getCurrentBatch("2024-07-01");
-        getCurrentBatch("2024-08-01");
-        getCurrentBatch("2024-09-01");
-        getCurrentBatch("2024-10-01");
-        getCurrentBatch("2024-11-01");
-        getCurrentBatch("2024-12-01");
+        getLastMonth("2024-12-01");
+        //test6();
         //now.format(DateTimeFormatter.ofPattern("yyyyMMddhh1500"))
         //now.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         //now.getMinute()
