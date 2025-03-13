@@ -23,7 +23,7 @@ public class CimGToSvg {
 
     private final static String cimgPath = "D:/svg/";
     private final static String G_FILEPATH  ="D:/svg/display/fac/";
-    private final static String FORMAT_G_FILEPATH ="C:/svg/";
+    private final static String FORMAT_G_FILEPATH ="D:\\svg\\display\\format_G\\";
     private static boolean image = true;
     private static Map<String, String> centerMap = new HashMap<>();
     private static Map<String, String> center0Map = new HashMap<>();

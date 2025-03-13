@@ -62,7 +62,6 @@ public class StringTest {
         System.out.println(pinyin);*/
         //testPmsUrl();
         //testPmsUrl2("ewogICJhbGciIDogIkhTMjU2Igp9.ewogICJpc3MiIDogIjdkNjg0YmQ1ZmRmNzExZWRhZWUwOGUwZjYyZmNiMzg4IiwKICAic3ViIiA6ICI3ZDY4NGJkNWZkZjcxMWVkYWVlMDhlMGY2MmZjYjM4OCIsCiAgImlhdCIgOiAxNzEwODk5MDM3Mjc2LAogICJleHAiIDogNzIwMCwKICAianRpIiA6IDEyMwp9.s7lpbsVqKRmWahMS+cp3aFDOYMTkM77JBp6SujMeoGs=");
-
         System.out.println(isSameLine2("营口.汤池祝家线1033", "汤池变1033祝家线"));
         System.out.println(isSameLine2("营口.汤池祝家线", "汤池变1033祝家线"));
         System.out.println(isSameLine2("祝家线", "汤池变1033祝家线"));

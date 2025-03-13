@@ -2,8 +2,6 @@ package cloud.lists;
 
 import cloud.Model;
 import cn.hutool.core.collection.ListUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +23,7 @@ public class ListTest {
 
     public static void main(String[] args) {
         //testDistinct();
-        test3();
+        test5();
     }
 
 
@@ -75,18 +73,18 @@ public class ListTest {
             }});
         }};
         List<Info> of = ListUtil.of(
-                Info.builder().count(1).dept("1").build(),
-                Info.builder().count(2).dept("2").build(),
-                Info.builder().count(3).dept("3").build(),
-                Info.builder().count(4).dept("4").build(),
-                Info.builder().count(4).dept("4").build(),
-                Info.builder().count(5).dept("5").build(),
-                Info.builder().count(6).dept("6").build(),
-                Info.builder().count(7).dept("7").build(),
-                Info.builder().count(8).dept("8").build(),
-                Info.builder().count(9).dept("9").build(),
-                Info.builder().count(10).dept("10").build(),
-                Info.builder().count(11).dept("11").build()
+                Info.builder().count(1).pId("1").build(),
+                Info.builder().count(2).pId("2").build(),
+                Info.builder().count(3).pId("3").build(),
+                Info.builder().count(4).pId("4").build(),
+                Info.builder().count(4).pId("4").build(),
+                Info.builder().count(5).pId("5").build(),
+                Info.builder().count(6).pId("6").build(),
+                Info.builder().count(7).pId("7").build(),
+                Info.builder().count(8).pId("8").build(),
+                Info.builder().count(9).pId("9").build(),
+                Info.builder().count(10).pId("10").build(),
+                Info.builder().count(11).pId("11").build()
         );
 
         List<String> collect = of.stream().sorted(Comparator.comparing(Info::getCount).reversed()).limit(5).map(Info::toString).collect(Collectors.toList());
@@ -113,41 +111,77 @@ public class ListTest {
 
     static void test3() {
         List<Info> of = ListUtil.of(
-                Info.builder().count(1).dept("1").build(),
-                Info.builder().count(2).dept("2").build(),
-                Info.builder().count(3).dept("3").build(),
-                Info.builder().count(4).dept("4").build(),
-                Info.builder().count(4).dept("4").build(),
-                Info.builder().count(5).dept("5").build(),
-                Info.builder().count(6).dept("6").build(),
-                Info.builder().count(7).dept("7").build(),
-                Info.builder().count(8).dept("8").build(),
-                Info.builder().count(9).dept("9").build(),
-                Info.builder().count(10).dept("10").build(),
-                Info.builder().count(11).dept("11").build()
+                Info.builder().count(1).pId("1").build(),
+                Info.builder().count(2).pId("2").build(),
+                Info.builder().count(3).pId("3").build(),
+                Info.builder().count(4).pId("4").build(),
+                Info.builder().count(4).pId("4").build(),
+                Info.builder().count(5).pId("5").build(),
+                Info.builder().count(6).pId("6").build(),
+                Info.builder().count(7).pId("7").build(),
+                Info.builder().count(8).pId("8").build(),
+                Info.builder().count(9).pId("9").build(),
+                Info.builder().count(10).pId("10").build(),
+                Info.builder().count(11).pId("11").build()
         );
         List<Info> o2f = ListUtil.of(
-                Info.builder().count(1).dept("1").build(),
-                Info.builder().count(1).dept("2").build(),
-                Info.builder().count(1).dept("3").build(),
-                Info.builder().count(9).dept("9").build(),
-                Info.builder().count(10).dept("10").build(),
-                Info.builder().count(1).dept("10").build(),
-                Info.builder().count(11).dept("11").build()
+                Info.builder().count(1).pId("1").build(),
+                Info.builder().count(1).pId("2").build(),
+                Info.builder().count(1).pId("3").build(),
+                Info.builder().count(9).pId("9").build(),
+                Info.builder().count(10).pId("10").build(),
+                Info.builder().count(1).pId("10").build(),
+                Info.builder().count(11).pId("11").build()
         );
         List<Info> collect = of.parallelStream().filter(o1 -> o2f.stream().noneMatch(o1::accept)).collect(Collectors.toList());
         collect.forEach(System.out::println);
     }
 
+    static void test4(){
+        List<Info> o2f = ListUtil.of(
+                Info.builder().limitType("1").count(1).pId("1").build(),
+                Info.builder().limitType("1").count(1).pId("2").build(),
+                Info.builder().limitType("12").count(1).pId("2").build(),
+                Info.builder().limitType("12").count(9).pId("1").build(),
+                Info.builder().limitType("13").count(10).pId("1").build(),
+                Info.builder().limitType("14").count(1).pId("1").build(),
+                Info.builder().limitType("13").count(11).pId("1").build()
+        );
+
+        Map<List<String>, List<Info>> collect = o2f.stream().collect(Collectors.groupingBy(m -> Arrays.asList(m.getLimitType(), m.getPId())));
+        collect.forEach((k,v)->{
+            System.out.print(k.get(0));
+            System.out.print("----");
+            System.out.print(k.get(1));
+            System.out.print("----");
+            System.out.print(v.size());
+            System.out.println();
+        });
+    }
+
+    static void test5(){
+        List<String> list = ListUtil.list(false);
+        for (int i = 1; i < 154; i++) {
+            list.add("key" + i);
+        }
+        List<List<String>> split = ListUtil.split(list, 10);
+        split.forEach(u->{
+            System.out.println(u.get(0));
+            System.out.println(u.get(u.size()-1));
+        });
+
+
+    }
 }
 
 @Data
 @Builder
 class Info {
-    private String dept;
+    private String pId;
+    private String limitType;
     private int count;
 
     public boolean accept(Info t) {
-        return this.count == t.getCount() && this.dept.equals(t.getDept());
+        return this.count == t.getCount() && this.pId.equals(t.getPId());
     }
 }
