@@ -10,6 +10,8 @@ import net.sourceforge.pinyin4j.PinyinHelper;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,8 +28,12 @@ public class StringTest {
 
 
     public static void main(String[] args) throws Exception {
-
-
+        System.out.println(StrUtil.blankToDefault(null,""));
+        System.out.println(divideStrings("10", "3", false));    // 3.3333
+        System.out.println(divideStrings("10", "3", true));     // 333.33%
+        System.out.println(divideStrings("1", "0", false));     // 0
+        System.out.println(divideStrings("abc", "2", true));    // 0%
+        System.out.println(divideStrings("0.5", "2", true));    // 25%
 
         //ystem.out.println(ListUtil.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9).subList(0, 4));
         //ashMap<String, Object> of = MapUtil.of("a", "b");
@@ -62,15 +68,62 @@ public class StringTest {
         System.out.println(pinyin);*/
         //testPmsUrl();
         //testPmsUrl2("ewogICJhbGciIDogIkhTMjU2Igp9.ewogICJpc3MiIDogIjdkNjg0YmQ1ZmRmNzExZWRhZWUwOGUwZjYyZmNiMzg4IiwKICAic3ViIiA6ICI3ZDY4NGJkNWZkZjcxMWVkYWVlMDhlMGY2MmZjYjM4OCIsCiAgImlhdCIgOiAxNzEwODk5MDM3Mjc2LAogICJleHAiIDogNzIwMCwKICAianRpIiA6IDEyMwp9.s7lpbsVqKRmWahMS+cp3aFDOYMTkM77JBp6SujMeoGs=");
-        System.out.println(isSameLine2("营口.汤池祝家线1033", "汤池变1033祝家线"));
-        System.out.println(isSameLine2("营口.汤池祝家线", "汤池变1033祝家线"));
-        System.out.println(isSameLine2("祝家线", "汤池变1033祝家线"));
-        System.out.println(isSameLine2("新城新城变1030新业甲线", "新城变1030新业甲线"));
-        System.out.println(isSameLine2("营口.团甸团甸线", "团甸变1030团甸线"));
-        System.out.println(isSameLine2("营口.红海红海变4354永安甲线", "红海变4354永安甲线"));
-        System.out.println(isSameLine2("水城甲线", "变电站712水城甲线"));
-        System.out.println(isSameLine2("水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
-        System.out.println(isSameLine2("营口.变电站712水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
+        //System.out.println(isSameLine2("营口.汤池祝家线1033", "汤池变1033祝家线"));
+        //System.out.println(isSameLine2("营口.汤池祝家线", "汤池变1033祝家线"));
+        //System.out.println(isSameLine2("祝家线", "汤池变1033祝家线"));
+        //System.out.println(isSameLine2("新城新城变1030新业甲线", "新城变1030新业甲线"));
+        //System.out.println(isSameLine2("营口.团甸团甸线", "团甸变1030团甸线"));
+        //System.out.println(isSameLine2("营口.红海红海变4354永安甲线", "红海变4354永安甲线"));
+        //System.out.println(isSameLine2("水城甲线", "变电站712水城甲线"));
+        //System.out.println(isSameLine2("水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
+        //System.out.println(isSameLine2("营口.变电站712水城甲线、水城乙线", "变电站712水城甲线、变电站712水城甲线"));
+    }
+
+
+    /**
+     * 字符串相除方法
+     * @param dividendStr 被除数字符串
+     * @param divisorStr 除数字符串
+     * @param asPercentage 是否以百分比形式返回
+     * @return 除法结果字符串，非法输入返回0或0%
+     */
+    public static String divideStrings(String dividendStr, String divisorStr, boolean asPercentage) {
+        try {
+            // 将字符串转换为BigDecimal
+            BigDecimal dividend = new BigDecimal(dividendStr);
+            BigDecimal divisor = new BigDecimal(divisorStr);
+
+            // 检查除数是否为零
+            if (divisor.compareTo(BigDecimal.ZERO) == 0) {
+                return asPercentage ? "0%" : "0";
+            }
+
+            // 进行除法运算，保留6位小数以便后续百分比处理
+            BigDecimal result = dividend.divide(divisor, 6, RoundingMode.HALF_UP);
+
+            // 处理百分比
+            if (asPercentage) {
+                result = result.multiply(new BigDecimal("100"));
+                // 百分比保留2位小数
+                result = result.setScale(2, RoundingMode.HALF_UP);
+            } else {
+                // 非百分比保留4位小数
+                result = result.setScale(4, RoundingMode.HALF_UP);
+            }
+
+            // 去除不必要的末尾零
+            result = result.stripTrailingZeros();
+
+            // 返回结果
+            return asPercentage ? result.toPlainString() + "%" : result.toPlainString();
+
+        } catch (NumberFormatException e) {
+            // 非法输入返回0或0%
+            return asPercentage ? "0%" : "0";
+        } catch (Exception e) {
+            // 其他异常也返回0或0%
+            return asPercentage ? "0%" : "0";
+        }
     }
 
     public static boolean isSameLine2(String str1, String str2) {

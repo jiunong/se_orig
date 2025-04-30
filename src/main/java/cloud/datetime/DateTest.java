@@ -1,6 +1,7 @@
 package cloud.datetime;
 
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +11,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+
 public class DateTest {
     private static final Logger logger = LoggerFactory.getLogger(DateTest.class);
 
 
     public static void main(String[] args) {
-        logger.info("{}开始执行给省调传分布式承载力数据",new Date());
-        test2();
+        //logger.info("{}开始执行给省调传分布式承载力数据",new Date());
+        //test2();
+        System.out.println(DateUtil.format(DateUtil.offsetMonth(DateUtil.date(), -1), "yyyy-MM"));
     }
 
 

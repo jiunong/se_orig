@@ -135,4 +135,35 @@ public class AichaApi {
         System.out.println(responseBody);
     }
 
+
+    public static void  speakerSplit(String fileName,String sample_rate) throws IOException {
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("text/plain");
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("file",fileName,
+                        RequestBody.create(MediaType.parse("application/octet-stream"),
+                                new File("D:\\PRO\\se_orig\\src\\main\\java\\rec_voice\\" + fileName)))
+                .addFormDataPart("sample_rate",sample_rate)
+                .build();
+        Request request = new Request.Builder()
+                .url("https://aihc.shengwenyun.com/aihc/v1/speaker/ksd")
+                .method("POST", body)
+                .addHeader("Authorization", TOKEN)
+                .build();
+        Response response = client.newCall(request).execute();
+    }
+
+    public static void getSpeakerSplitFile(String fileName,String sample_rate) throws IOException {
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        Request request = new Request.Builder()
+                .url("https://aihc.shengwenyun.com/aihc/v1/speaker/download?file=20220107/36c1c3d6bd0609baa6ee9149da83ec14_485764388184236032.zip")
+                .method("GET", null)
+                .addHeader("Authorization", TOKEN)
+                .build();
+        Response response = client.newCall(request).execute();
+    }
 }
